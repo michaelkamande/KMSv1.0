@@ -1,3 +1,5 @@
+# Importing Modules =======================================================================================================================================================================================================================
+
 from tkinter import *
 from PIL import ImageTk,Image
 from tkinter import messagebox
@@ -11,54 +13,79 @@ import os
 
 
 
-# Login window
+# Login Window =======================================================================================================================================================================================================================
+
 class Login():
 
 
 	def __init__(self, master):
-		# Window configuration
+
+		# Login Window Configurations
+
 		self.master = master
 		self.master.geometry('1350x690+0+0')
 		self.master.title('KITS MANAGEMENT SOFTWARE')
 		self.master.iconbitmap('kits.ico')
 		self.master.configure(background = '#ffffff')
 
+
+		# Login Variables
+
+		global username
+		global password
+
+
+		# Login Window Widgets
+
 		self.logo = ImageTk.PhotoImage(Image.open("kits.png"))
 		self.branding = Label(self.master, image = self.logo, bg = "#ffffff")
 		self.branding.grid(row = 0, column = 1, padx = 0, pady = 50)
 
-		self.title = Label(self.master, text = "PERSONNEL AUTHENTICATION", bg = '#ffffff' ,font = ('Helvetica', 18, 'bold'))
+		self.title = Label(self.master, text = "PERSONNEL AUTHENTICATION", bg = '#ffffff' , font = ('Helvetica', 18, 'bold'))
 		self.title.grid(row = 2, column = 1)
 
 		self.loginFrame = Frame(self.master, padx = 30, pady = 30, bd = 1, relief = "ridge")
 		self.loginFrame.grid(row = 3, column = 1, padx = 500, pady = 20)
 
-		global username
-
 		username = Entry(self.loginFrame, font =('Helvetica', 12))
 		username.grid(row = 0, column = 1, padx = 10)
-		self.password = Entry(self.loginFrame, show = "*", font =('Helvetica', 12))
-		self.password.grid(row = 1, column = 1, pady = (10, 0))
-		self.usernameLabel = Label(self.loginFrame, text = "Username", font = ("Helvetica", 12, "bold")).grid(row = 0, column = 0)
-		self.passwordLabel = Label(self.loginFrame, text = "Password", font = ("Helvetica", 12, "bold")).grid(row = 1, column = 0, pady = (10, 0))
-		self.loginButton = Button(self.loginFrame, text = "SIGN IN", width = 22, command = self.gotoWorkspace, bg = "#09383d", fg = "#ffffff", font = ("Helvetica", 10, "bold")).grid(row=2, column = 1, pady = 20)
+		password = Entry(self.loginFrame, show = "*", font =('Helvetica', 12))
+		password.grid(row = 1, column = 1, pady = (10, 0))
+		usernameLabel = Label(self.loginFrame, text = "Username", font = ("Helvetica", 12, "bold")).grid(row = 0, column = 0)
+		passwordLabel = Label(self.loginFrame, text = "Password", font = ("Helvetica", 12, "bold")).grid(row = 1, column = 0, pady = (10, 0))
+		loginButton = Button(self.loginFrame, text = "SIGN IN", width = 22, command = self.gotoWorkspace, bg = "#09383d", fg = "#ffffff", font = ("Helvetica", 10, "bold")).grid(row=2, column = 1, pady = 20)
+
+
+# Users Authentication Function =======================================================================================================================================================================================================================
 
 	def gotoWorkspace(self):
+
+		# Authentication Variables
 
 		global user
 		global passwd
 		global secret_word
 
 		user = ['mkamande', 'pom', 'receptionist', 'accountant', 'hr']
-		passwd = ['k1ts2020.', 'k1ts2020.', 'r3ce7t10n', 'acc0unt1n8', '4_hR']
+		passwd = ['k1ts2020.admin', 'k1ts2020.', 'r3ce7t10n', 'acc0unt1n8', '4_hR']
 		secret_word = ['tiempo', 'kaluna', 'bambistone', 'kerida', 'xiyun']
 
-		if username.get() == user[0] and self.password.get() == passwd[0] or username.get() == [1] and self.password.get() == passwd[1]:
+
+		# Checking Credentials and Assigning Rights
+
+		if username.get() == user[0] and password.get() == passwd[0]:
 			self.master.withdraw()
 			dashboard = Toplevel(self.master)
 			workspaceGUI = Workspace(dashboard)
 
-		elif username.get() == user[2] and self.password.get() == passwd[2]:
+		elif username.get() == user[1] and password.get() == passwd[1]:
+			self.master.withdraw()
+			dashboard = Toplevel(self.master)
+			workspaceGUI = Workspace(dashboard)
+
+			maintenanceBtn.configure(state = DISABLED)
+
+		elif username.get() == user[2] and password.get() == passwd[2]:
 			self.master.withdraw()
 			dashboard = Toplevel(self.master)
 			workspaceGUI = Workspace(dashboard)
@@ -67,7 +94,7 @@ class Login():
 			personnelBtn.configure(state = DISABLED)
 			maintenanceBtn.configure(state = DISABLED)
 
-		elif username.get() == user[3] and self.password.get() == passwd[3]:
+		elif username.get() == user[3] and password.get() == passwd[3]:
 			self.master.withdraw()
 			dashboard = Toplevel(self.master)
 			workspaceGUI = Workspace(dashboard)
@@ -75,7 +102,7 @@ class Login():
 			personnelBtn.configure(state = DISABLED)
 			maintenanceBtn.configure(state = DISABLED)
 
-		elif username.get() == user[4] and self.password.get() == passwd[4]:
+		elif username.get() == user[4] and password.get() == passwd[4]:
 			self.master.withdraw()
 			dashboard = Toplevel(self.master)
 			workspaceGUI = Workspace(dashboard)
@@ -86,23 +113,33 @@ class Login():
 			financesBtn.configure(state = DISABLED)
 			documentsBtn.configure(state = DISABLED)
 			maintenanceBtn.configure(state = DISABLED)
-
 			
 		else:
 			self.warning = Label(self.loginFrame, text = "Incorrect Username or Password !", fg = "red").grid(row = 3, column = 1)
 
-		username.delete(0, END)
-		self.password.delete(0, END)
 
+		# Clearing Fields
+
+		username.delete(0, END)
+		password.delete(0, END)
+
+
+# Workspace Window =======================================================================================================================================================================================================================
 
 class Workspace():
 
+	# Workspace Window Configurations
+
 	def __init__(self, master):
+
 		self.master = master
 		self.master.geometry('620x690+0+0')
 		self.master.title('KITS MANAGEMENT SOFTWARE - Workspace')
 		self.master.iconbitmap('kits.ico')
 		self.master.configure(background = '#ffffff')
+
+
+		# Workspace Variables
 
 		global projectsBtn
 		global productsBtn
@@ -114,6 +151,9 @@ class Workspace():
 		global maintenanceBtn
 
 		now = dt.datetime.now()
+
+
+		# Workspace Widgets
 
 		self.avatar = ImageTk.PhotoImage(Image.open("avatar.png"))
 		self.showAvatar = Label(self.master, image = self.avatar, bg = "#ffffff")
@@ -141,7 +181,9 @@ class Workspace():
 		maintenanceBtn = Button(self.bottomPanel, text = "Maintenance", command = self.gotoMaintenance, width = 15, bd = 1, relief = "ridge" , font = ('Helvetica', 10, 'bold'))
 		maintenanceBtn.grid(row = 2, column = 0, sticky = "se")
 
-		# Menu buttons
+
+		# Menu Buttons
+
 		projectsBtn = Button(self.leftPanel, text = "PROJECTS", command = self.gotoProjects, width = 20, fg = "#ffffff", bg = "#09383d", font = ('Helvetica', 14, 'bold'))
 		projectsBtn.grid(row = 2, column = 0)
 		productsBtn = Button(self.leftPanel, text = "PRODUCTS", command = self.gotoProducts, width = 20, fg = "#ffffff", bg = "#09383d",font = ('Helvetica', 14, 'bold'))
@@ -158,7 +200,7 @@ class Workspace():
 		self.entertainBtn.grid(row = 8, column = 0, pady = 10)
 
 
-
+	# Workspace Buttons Functions
 
 	def gotoProjects(self):
 		projects = Toplevel(self.master)
@@ -185,7 +227,6 @@ class Workspace():
 		self.master.filename = filedialog.askopenfilename(initialdir = "D:/Invoice", title = "Select invoice", filetypes = (("Excel Files", "*.xlsx"), ("PDF Files", "*.pdf")))
 		os.system("start " + self.master.filename)
 
-
 	def signout(self):
 		response = messagebox.askyesno("CONFIRM...", "Do you want to close the application?")
 		if response == 1:
@@ -202,8 +243,11 @@ class Workspace():
 		webbrowser.open('https://www.kamande.net')
 		
 
+# Projects Window =======================================================================================================================================================================================================================
 
 class Projects():
+
+	# Database Creation or Connection With Table Configuration
 
 	conn = sqlite3.connect('kits_data.db')
 	c = conn.cursor()
@@ -222,28 +266,36 @@ class Projects():
 		status text
 		)""")
 
+
+
 	def __init__(self, master):
+
+		# Projects Window Configuration
+
 		self.master = master
-		self.master.geometry('1350x550+0+80')
+		self.master.geometry('1350x690+0+0')
 		self.master.title('KMS - Projects')
 		self.master.iconbitmap('kits.ico')
 		self.master.configure(background = '#ffffff')
 
 
+		# Projects Window Widgets
+
+
 		self.exitBtn = Button(self.master, text = "Close", width = 5, command = self.exit, bg = "#09383d", fg = "#ffffff", font = ('Helvetica', 16, 'bold'))
 		self.exitBtn.grid(row = 0, column = 0, pady = 10, sticky = W)
 
-		self.leftPanel = Frame(self.master, padx = 20, pady = 20)
-		self.leftPanel.grid(row = 3, column = 0, columnspan = 3, padx = 20, pady = 10)
+		self.leftPanel = Frame(self.master, padx = 20, pady = 10)
+		self.leftPanel.grid(row = 3, column = 0, columnspan = 3, padx = 20, pady = 50)
 
 		self.rightPanel = Frame(self.master, padx = 20, pady = 20)
-		self.rightPanel.grid(row = 3, column = 3, rowspan = 15 , columnspan = 6, padx = 20, pady = 10)
+		self.rightPanel.grid(row = 3, column = 3, rowspan = 15 , columnspan = 6, padx = 20, pady = 30)
 
 		self.clearBtn = Button(self.master, text = "Clear", width = 5, command = self.clear, bg = "#09383d", fg = "#ffffff", font = ('Helvetica', 12, 'bold'))
-		self.clearBtn.grid(row = 4, column = 8, ipadx = 14)
+		self.clearBtn.grid(row = 4, column = 8, ipadx = 14, pady = 10)
 
-		self.newProjectLabel = Label(self.master, text = "New Project", fg = "#09383d", bg = "#ffffff", font = ("Helvetica", 20, "bold"))
-		self.newProjectLabel.grid(row = 1, column = 0, pady = 7)
+		self.newProjectLabel = Label(self.leftPanel, text = "New Project", fg = "#09383d", font = ("Helvetica", 18, "bold"))
+		self.newProjectLabel.grid(row = 0, column = 0, columnspan = 2, pady = 10, sticky = W)
 
 		self.titleLabel = Label(self.leftPanel, text = "Title", font =('Helvetica', 12, 'bold')).grid(row = 2, column = 0, sticky = W)
 		self.typeLabel = Label(self.leftPanel, text = "Type", font =('Helvetica', 12, 'bold')).grid(row = 3, column = 0, sticky = W)
@@ -251,24 +303,21 @@ class Projects():
 		self.contactLabel = Label(self.leftPanel, text = "Contact", font =('Helvetica', 12, 'bold')).grid(row = 5, column = 0, sticky = W)
 		self.costLabel = Label(self.leftPanel, text = "Cost", font =('Helvetica', 12, 'bold')).grid(row = 6, column = 0, sticky = W)
 		self.paidLabel = Label(self.leftPanel, text = "Paid", font =('Helvetica', 12, 'bold')).grid(row = 7, column = 0, sticky = W)
-		#self.RemainderLabel = Label(self.leftPanel, text = "Remainder", font =('Helvetica', 12, 'bold')).grid(row = 8, column = 0, sticky = W)
 		self.chargeLabel = Label(self.leftPanel, text = "Charge", font =('Helvetica', 12, 'bold')).grid(row = 9, column = 0, sticky = W)
-		#self.profitLabel = Label(self.leftPanel, text = "Profit", font =('Helvetica', 12, 'bold')).grid(row = 10, column = 0, sticky = W)
-		#self.dateLabel = Label(self.leftPanel, text = "Date", font =('Helvetica', 12, 'bold')).grid(row = 11, column = 0, sticky = W)
 		self.statusLabel = Label(self.leftPanel, text = "Status", font =('Helvetica', 12, 'bold')).grid(row = 12, column = 0, sticky = W)
 
 
 		self.note = Label(self.leftPanel, text = "Note: Currency is US dollars ($)", font =('Helvetica', 10)).grid(row = 13, column = 1)
 		
 		self.typeSelect = StringVar()
-		self.typeSelect.set("Desktop App")
+		self.typeSelect.set("Select a type")
 
 		self.statusSelect = StringVar()
-		self.statusSelect.set("Off")
+		self.statusSelect.set("Select a status")
 
 		self.title = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.title.grid(row = 2, column = 1)
-		self.type = OptionMenu(self.leftPanel, self.typeSelect, "Other", "Desktop App", "Desktop App and Graphics", "Digital Marketing", "Graphics", "Infrastructure", "Mobile App" , "Web App", "Web App and Graphics", "Web App and Mobile App", "Website", "Website and Desktop App", "Website and Graphics", "Website and Mobile App", "Website, Mobile App and Graphics", "Web App, Mobile App and Graphics")
+		self.type = OptionMenu(self.leftPanel, self.typeSelect, "Select a type", "Desktop App", "Desktop App and Graphics", "Digital Marketing", "Graphics", "Infrastructure", "Mobile App" , "Other", "Web App", "Web App and Graphics", "Web App and Mobile App", "Website", "Website and Desktop App", "Website and Graphics", "Website and Mobile App", "Website, Mobile App and Graphics", "Web App, Mobile App and Graphics")
 		self.type.grid(row = 3, column = 1)
 		self.client = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.client.grid(row = 4, column = 1)
@@ -278,21 +327,16 @@ class Projects():
 		self.cost.grid(row = 6, column = 1)
 		self.paid = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.paid.grid(row = 7, column = 1)
-		self.remainder = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.remainder.grid(row = 8, column = 1)
 		self.charge = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.charge.grid(row = 9, column = 1)
-		self.profit = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.profit.grid(row = 10, column = 1)
-		self.date_ = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.date_.grid(row = 11, column = 1)
 		self.status = OptionMenu(self.leftPanel, self.statusSelect, "Off", "In Progress", "Cancelled" ,"Completed")
 		self.status.grid(row = 12, column = 1)
 
 		self.saveBtn = Button(self.leftPanel, text = "Save", command = self.save , width = 17, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.saveBtn.grid(row = 14, column = 1, pady = 10)
 
-		# Buttons
+
+		# Navigation Buttons
 
 		self.projects = Button(self.master, text = "Projects", command = self.query_all, width = 15, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.projects.grid(row = 1, column = 3)
@@ -315,8 +359,6 @@ class Projects():
 		self.searchBox = Entry(self.master, bd = 1, bg = "#f8fafa", relief = SUNKEN)
 		self.searchBox.grid(row = 0, column = 8)
 
-		#global search 
-		#search = self.searchBox.get()
 
 		self.projectIDLabel = Label(self.master, text = "Project ID: ", bg = '#ffffff' , font = ("Helvetica", 10))
 		self.projectIDLabel.grid(row = 2, column = 7, sticky = E)
@@ -324,7 +366,7 @@ class Projects():
 		self.projectID.grid(row = 2, column = 8)
 
 
-		# Listbox to display records
+		# Display Area
 
 		self.dataList = Listbox(self.rightPanel, font = ('Helvetica', 9, 'bold'), width = 120, height = 16, bg = "#ffffff")
 		self.dataList.grid(row = 0, rowspan = 15, column = 0)
@@ -336,6 +378,9 @@ class Projects():
 		self.dataList.configure(yscrollcommand = scrollbarY.set, xscrollcommand = scrollbarX.set)
 
 		self.dataList.delete(0, END)
+
+
+	# Projects Navigation Buttons Functions	
 
 	def save(self):
 		
@@ -382,6 +427,7 @@ class Projects():
 
 
 	def query_all(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -404,7 +450,9 @@ class Projects():
 		conn.commit()
 		conn.close()
 
+
 	def query_completed(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -427,7 +475,9 @@ class Projects():
 		conn.commit()
 		conn.close()
 
+
 	def query_inprogress(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -450,7 +500,9 @@ class Projects():
 		conn.commit()
 		conn.close()
 
+
 	def query_cancelled(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -472,6 +524,7 @@ class Projects():
 
 		conn.commit()
 		conn.close()
+
 
 	def query_byclient(self):
 
@@ -501,7 +554,9 @@ class Projects():
 
 		self.searchBox.delete(0, END)
 
+
 	def query_pendingPayment(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -526,6 +581,7 @@ class Projects():
 
 	
 	def updateWin(self):
+
 		global project_id
 
 		editor = Toplevel(self.master)
@@ -559,6 +615,7 @@ class Projects():
 		
 
 	def delete(self):
+
 		response = messagebox.askyesno('Delete Record', 'Do you want to delete this record?')
 		if response == 1:
 			conn = sqlite3.connect('kits_data.db')
@@ -573,10 +630,14 @@ class Projects():
 			conn.close()
 			response = messagebox.showinfo('Delete Record', 'Record deleted successfully!')
 
+
 	def clear(self):
+
 		self.dataList.delete(0, END)
 
+
 	def exit(self):
+
 		self.master.destroy()
 
 
@@ -584,8 +645,13 @@ class Projects():
 	conn.close()
 
 
+# Update Projects Window =======================================================================================================================================================================================================================
+
 class Updateproject():
+
+
 	def __init__(self, master):
+
 		self.master = master
 		self.master.geometry('290x300+500+300')
 		self.master.title('KMS - Update Project')
@@ -646,7 +712,7 @@ class Updateproject():
 			conn.close()
 
 			self.master.destroy()
-			updatemessage = messagebox.showinfo("Updated", "Project updated successfully!")
+			updatemessage = messagebox.showinfo("Update a project", "Project updated successfully!")
 
 
 		titleLabel = Label(self.master, text = "Title", font =('Helvetica', 12, 'bold')).grid(row = 2, column = 0, sticky = W)
@@ -655,24 +721,20 @@ class Updateproject():
 		contactLabel = Label(self.master, text = "Contact", font =('Helvetica', 12, 'bold')).grid(row = 5, column = 0, sticky = W)
 		costLabel = Label(self.master, text = "Cost", font =('Helvetica', 12, 'bold')).grid(row = 6, column = 0, sticky = W)
 		paidLabel = Label(self.master, text = "Paid", font =('Helvetica', 12, 'bold')).grid(row = 7, column = 0, sticky = W)
-		#self.RemainderLabel = Label(self.leftPanel, text = "Remainder", font =('Helvetica', 12, 'bold')).grid(row = 8, column = 0, sticky = W)
 		chargeLabel = Label(self.master, text = "Charge", font =('Helvetica', 12, 'bold')).grid(row = 9, column = 0, sticky = W)
-		#self.profitLabel = Label(self.leftPanel, text = "Profit", font =('Helvetica', 12, 'bold')).grid(row = 10, column = 0, sticky = W)
-		#self.dateLabel = Label(self.leftPanel, text = "Date", font =('Helvetica', 12, 'bold')).grid(row = 11, column = 0, sticky = W)
 		statusLabel = Label(self.master, text = "Status", font =('Helvetica', 12, 'bold')).grid(row = 12, column = 0, sticky = W)
-
 
 		note = Label(self.master, text = "Note: Currency is US dollars ($)", font =('Helvetica', 10)).grid(row = 13, column = 1)
 		
 		typeSelectEditor = StringVar()
-		typeSelectEditor.set("Desktop App")
+		typeSelectEditor.set("Select a type")
 
 		statusSelectEditor = StringVar()
-		statusSelectEditor.set("Off")
+		statusSelectEditor.set("Select a status")
 
 		titleEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		titleEditor.grid(row = 2, column = 1)
-		typeEditor = OptionMenu(self.master, typeSelectEditor, "Other", "Desktop App", "Desktop App and Graphics", "Digital Marketing", "Graphics", "Infrastructure", "Mobile App" , "Web App", "Web App and Graphics", "Web App and Mobile App", "Website", "Website and Desktop App", "Website and Graphics", "Website and Mobile App", "Website, Mobile App and Graphics", "Web App, Mobile App and Graphics")
+		typeEditor = OptionMenu(self.master, typeSelectEditor, "Select a type", "Other", "Desktop App", "Desktop App and Graphics", "Digital Marketing", "Graphics", "Infrastructure", "Mobile App" , "Web App", "Web App and Graphics", "Web App and Mobile App", "Website", "Website and Desktop App", "Website and Graphics", "Website and Mobile App", "Website, Mobile App and Graphics", "Web App, Mobile App and Graphics")
 		typeEditor.grid(row = 3, column = 1)
 		clientEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		clientEditor.grid(row = 4, column = 1)
@@ -682,21 +744,17 @@ class Updateproject():
 		costEditor.grid(row = 6, column = 1)
 		paidEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		paidEditor.grid(row = 7, column = 1)
-		remainderEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.remainder.grid(row = 8, column = 1)
 		chargeEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		chargeEditor.grid(row = 9, column = 1)
-		profitEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.profit.grid(row = 10, column = 1)
-		date_Editor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.date_.grid(row = 11, column = 1)
-		statusEditor = OptionMenu(self.master, statusSelectEditor, "Off", "In Progress", "Cancelled" ,"Completed")
+		statusEditor = OptionMenu(self.master, statusSelectEditor, "Select a status", "In Progress", "Cancelled" ,"Completed")
 		statusEditor.grid(row = 12, column = 1)
 
 		updateBtn = Button(self.master, text = "Update", command = update , width = 17, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		updateBtn.grid(row = 14, column = 1, pady = 10)
 
 
+
+# Products Window =======================================================================================================================================================================================================================
 
 class Products():
 
@@ -722,23 +780,30 @@ class Products():
 		date_ text
 		)""")
 
+
 	def __init__(self, master):
+
+		# Window Configuration
+
 		self.master = master
-		self.master.geometry('1350x630+0+35')
+		self.master.geometry('1350x690+0+0')
 		self.master.title('KMS - Products')
 		self.master.iconbitmap('kits.ico')
 		self.master.configure(background = '#ffffff')
+
+
+		# Products Window Widgets
 
 		self.exitBtn = Button(self.master, text = "Close", width = 5, command = self.exit, bg = "#09383d", fg = "#ffffff", font = ('Helvetica', 16, 'bold'))
 		self.exitBtn.grid(row = 0, column = 0, pady = 10, sticky = W)
 
 		self.left = Frame(self.master)
-		self.left.grid(row = 3, column = 0, columnspan = 2, padx = 10)
+		self.left.grid(row = 3, column = 0, columnspan = 2, padx = 20, pady = 20)
 
-		self.leftPanel = Frame(self.left, padx = 19, pady = 10)
+		self.leftPanel = Frame(self.left, padx = 5, pady = 10)
 		self.leftPanel.grid(row = 3, column = 0, columnspan = 3, padx = 20)
 
-		self.leftLower = Frame(self.left, padx = 29, pady = 10)
+		self.leftLower = Frame(self.left, padx = 5, pady = 10)
 		self.leftLower.grid(row = 4, column = 0, columnspan = 3, padx = 20)
 
 		self.rightPanel = Frame(self.master, padx = 20, pady = 20)
@@ -748,30 +813,10 @@ class Products():
 		self.clearBtn.grid(row = 5, column = 8, ipadx = 14)
 
 		self.newSaleLabel = Label(self.leftPanel, text = "Sell a product", fg = "#09383d", font = ("Helvetica", 18, "bold"))
-		self.newSaleLabel.grid(row = 0, column = 0, columnspan = 2, pady = 1)
+		self.newSaleLabel.grid(row = 0, column = 0, columnspan = 2, pady = 1, sticky = W)
 
-		"""
-		self.clientLabel = Label(self.leftPanel, text = "Client", font =('Helvetica', 12, 'bold')).grid(row = 2, column = 0, sticky = W)
-		self.mobileLabel = Label(self.leftPanel, text = "Mobile", font =('Helvetica', 12, 'bold')).grid(row = 3, column = 0, sticky = W)
-		self.productsLabel = Label(self.leftPanel, text = "Products", font =('Helvetica', 12, 'bold')).grid(row = 4, column = 0, sticky = W)
-		self.quantityLabel = Label(self.leftPanel, text = "Quantity", font =('Helvetica', 12, 'bold')).grid(row = 5, column = 0, sticky = W)
-		self.costLabel = Label(self.leftPanel, text = "Cost ($)", font =('Helvetica', 12, 'bold')).grid(row = 6, column = 0, sticky = W)
-		
-
-		self.client = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		self.client.grid(row = 2, column = 1)
-		self.mobile = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		self.mobile.grid(row = 3, column = 1)"""
-
-		#self.productsLabel = Label(self.leftPanel, text = "List of products", font =('Helvetica', 12, 'bold')).grid(row = 1, column = 1, sticky = W)
 		self.productsList = Listbox(self.leftPanel, selectmode = MULTIPLE , font = ('Helvetica', 10, 'bold'), width = 30, height = 5, bg = "#ffffff")
 		self.productsList.grid(row = 4, column = 1, pady = 10)
-
-		"""
-		self.quantity = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		self.quantity.grid(row = 5, column = 1)
-		self.cost = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		self.cost.grid(row = 6, column = 1)"""
 
 		scrollproducts = Scrollbar(self.leftPanel, command = self.productsList.yview)
 		scrollproducts.grid(row = 4, column = 2, sticky = 'ns')
@@ -784,13 +829,18 @@ class Products():
 		self.selectProductBtn = Button(self.leftPanel, text = "Select product", command = self.selectProduct , width = 17, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.selectProductBtn.grid(row = 7, column = 1, pady = 10)
 
+
+		# Retrieving products from Database and Displaying Them
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
 		c.execute("SELECT *, oid FROM products")
 		product_record = c.fetchall()
-		
 
+		self.productsList.insert(END, "Id." + "  " + "Product" + "  " + "Price($)" + "  " + "Stock" + "\n")
+		self.productsList.insert(END, "\n")
+		
 		for product in product_record:
 			self.productsList.insert(END, str(product[7]) + "  " + str(product[0]) + "  " + str(product[3]) + "      " + str(product[2]) + "\n")
 
@@ -798,11 +848,8 @@ class Products():
 		conn.close()
 
 
-		#self.separator = Label(self.leftPanel, text = "   ", font =('Helvetica', 12, 'bold'))
-		#self.separator.grid(row = 7, column = 0)
-
 		self.addProductLabel = Label(self.leftLower, text = "Add a product", fg = "#09383d", font = ("Helvetica", 18, "bold"))
-		self.addProductLabel.grid(row = 8, column = 0, columnspan = 2, pady = 7)
+		self.addProductLabel.grid(row = 8, column = 0, columnspan = 2, pady = 7, sticky = W)
 
 		self.product_nameLabel = Label(self.leftLower, text = "Name", font =('Helvetica', 12, 'bold')).grid(row = 9, column = 0, sticky = W)
 		self.categoryLabel = Label(self.leftLower, text = "Category", font =('Helvetica', 12, 'bold')).grid(row = 10, column = 0, sticky = W)
@@ -824,7 +871,8 @@ class Products():
 		self.addBtn = Button(self.leftLower, text = "Add", command = self.add, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.addBtn.grid(row = 13, column = 1, pady = 10, sticky = E)
 
-		# Buttons
+
+		# Products Window Navigation Buttons
 
 		self.sales = Button(self.master, text = "Sales", command = self.query_sales, width = 15, font = ("Helvetica", 12, "bold"), fg = "#fa1b27", bg = "#ffffff", bd = 2, relief = RIDGE)
 		self.sales.grid(row = 1, column = 3)
@@ -851,7 +899,7 @@ class Products():
 		self.productID.grid(row = 2, column = 8)
 
 
-		# Listbox to display records
+		# Display Area
 
 		self.dataList = Listbox(self.rightPanel, font = ('Helvetica', 9, 'bold'), width = 120, height = 16, bg = "#ffffff")
 		self.dataList.grid(row = 0, rowspan = 10, column = 0)
@@ -864,7 +912,11 @@ class Products():
 
 		self.dataList.delete(0, END)
 
+
+	# Products Navigation Buttons Functions
+
 	def selectProduct(self):
+
 		global identifier
 
 		editor = Toplevel(self.master)
@@ -890,8 +942,6 @@ class Products():
 		conn.close()
 
 		self.id_ofProduct.delete(0, END)
-
-
 
 
 	def add(self):
@@ -927,12 +977,12 @@ class Products():
 		self.stockbox.delete(0, END)
 		self.price.delete(0, END)
 	
-		
 
 		response = messagebox.showinfo('Add product', 'Product added successfully !')
 
 
 	def query_sales(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -952,7 +1002,9 @@ class Products():
 		conn.commit()
 		conn.close()
 
+
 	def query_products(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -972,7 +1024,9 @@ class Products():
 		conn.commit()
 		conn.close()
 
+
 	def query_stock(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -994,6 +1048,7 @@ class Products():
 
 
 	def query_categories(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -1012,6 +1067,7 @@ class Products():
 
 		conn.commit()
 		conn.close()
+
 
 	def query(self):
 
@@ -1057,6 +1113,7 @@ class Products():
 
 	
 	def updateWin(self):
+
 		global product_id
 
 		editor = Toplevel(self.master)
@@ -1085,7 +1142,9 @@ class Products():
 		
 
 	def delete(self):
+
 		response = messagebox.askyesno('Delete Record', 'Do you want to delete this record?')
+
 		if response == 1:
 			conn = sqlite3.connect('kits_data.db')
 			c = conn.cursor()
@@ -1093,11 +1152,12 @@ class Products():
 			c.execute("DELETE from products WHERE oid = " + self.productID.get())
 
 			self.productID.delete(0, END)
-
-			
+		
 			conn.commit()
 			conn.close()
+
 			response = messagebox.showinfo('Delete Record', 'Record deleted successfully!')
+
 
 	def clear(self):
 		self.dataList.delete(0, END)
@@ -1110,8 +1170,13 @@ class Products():
 	conn.close()
 
 
+
+# Update Product =========================================================================================================================================================================================================================================================================================================================================================
+
 class Updateproduct():
+
 	def __init__(self, master):
+
 		self.master = master
 		self.master.geometry('300x170+500+300')
 		self.master.title('KMS - Update Product')
@@ -1166,7 +1231,6 @@ class Updateproduct():
 			updatemessage = messagebox.showinfo("Updated", "Product updated successfully!")
 
 
-
 		product_nameLabel = Label(self.master, text = "Product name", font =('Helvetica', 12, 'bold')).grid(row = 9, column = 0, sticky = W)
 		categoryLabel = Label(self.master, text = "Category", font =('Helvetica', 12, 'bold')).grid(row = 10, column = 0, sticky = W)
 		stockLabel = Label(self.master, text = "Stock", font =('Helvetica', 12, 'bold')).grid(row = 11, column = 0, sticky = W)
@@ -1185,15 +1249,17 @@ class Updateproduct():
 		stockEditor.grid(row = 11, column = 1)
 		priceEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		priceEditor.grid(row = 12, column = 1)
-		statusEditor = OptionMenu(self.master, statusSelectEditor, "In Stock", "Out of Stock")
-		#statusEditor.grid(row = 10, column = 1)
 	
 		updateEditorBtn = Button(self.master, text = "Update", command = update , width = 17, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		updateEditorBtn.grid(row = 13, column = 1, pady = 10)
 
 
+# Sell Product Window =========================================================================================================================================================================================================================================================================================================================================================
+
 class Sellproduct():
+
 	def __init__(self, master):
+
 		self.master = master
 		self.master.geometry('260x290+500+200')
 		self.master.title('KMS - Sell Product')
@@ -1214,7 +1280,6 @@ class Sellproduct():
 			now = dt.datetime.now()
 
 			totalCost = int(cost.get()) * int(quantity.get())
-
 
 			c.execute("INSERT INTO sales VALUES (:client, :mobile, :product, :quantity, :cost, :date_)",
 					{
@@ -1248,11 +1313,13 @@ class Sellproduct():
 			conn.commit()
 			conn.close()
 
+
 			invoice = tempfile.mktemp('Invoice.txt')
 			open(invoice, 'w').write('\n\nKITS SARL | Invoice \n\n' + 'DT	:	' + str(now) + '\n\n' + 'Client	:	' + str(client.get()) + '\n' + 'Mobile	:	' + str(mobile.get()) + '\n' + 'Product	:	' + str(product.get()) + '\n' + 'Qty	:	' + str(quantity.get()) + '\n' + 'Cost	:	' + str(totalCost) + ' $\n\n\n' + 'Thank you for visiting us!' + '\n\n' + 'Tel : +243 81 583 60 68 \nAdresse: 19, Comité urbain, Gombe, Kinshasa, RDC')
 			os.startfile(invoice, 'print')
 
 			soldmessage = messagebox.showinfo("Sell a product", "Product sold successfully!")
+
 			self.master.destroy()
 
 		productLabel = Label(self.master, text = "Product", font =('Helvetica', 12, 'bold')).grid(row = 9, column = 0, sticky = W)
@@ -1260,7 +1327,6 @@ class Sellproduct():
 		stockLabel = Label(self.master, text = "Stock", font =('Helvetica', 12, 'bold')).grid(row = 11, column = 0, sticky = W)
 		costLabel = Label(self.master, text = "Cost ($)", font =('Helvetica', 12, 'bold')).grid(row = 12, column = 0, sticky = W)
 		quantityLabel = Label(self.master, text = "Qty", font =('Helvetica', 12, 'bold')).grid(row = 13, column = 0, sticky = W)
-		#totalCostLabel = Label(self.master, text = "Total", font =('Helvetica', 12, 'bold')).grid(row = 13, column = 0, sticky = W)
 		spaceLabel = Label(self.master, text = "  ", font =('Helvetica', 12, 'bold')).grid(row = 14, column = 0, sticky = W)
 		clientLabel = Label(self.master, text = "Client", font =('Helvetica', 12, 'bold')).grid(row = 16, column = 0, sticky = W)
 		mobileLabel = Label(self.master, text = "Mobile", font =('Helvetica', 12, 'bold')).grid(row = 17, column = 0, sticky = W)
@@ -1273,8 +1339,6 @@ class Sellproduct():
 		cost.grid(row = 12, column = 1)
 		quantity = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		quantity.grid(row = 13, column = 1)
-		totalCost = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
-		#totalCost.grid(row = 13, column = 1)
 		stock = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		stock.grid(row = 11, column = 1)
 
@@ -1282,13 +1346,16 @@ class Sellproduct():
 		client.grid(row = 16, column = 1)
 		mobile = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		mobile.grid(row = 17, column = 1)
-
 	
 		sellBtn = Button(self.master, text = "Sell", command = sell , width = 17, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		sellBtn.grid(row = 18, column = 1, pady = 10)
 
 
+# Students Window =========================================================================================================================================================================================================================================================================================================================================================
+
 class Students():
+
+	# Database Connection With Tables Creation
 
 	conn = sqlite3.connect('kits_data.db')
 	c = conn.cursor()
@@ -1308,19 +1375,25 @@ class Students():
 		certnumber text
 		)""")
 
+
 	def __init__(self, master):
+
+		# Students Window Configuration 
+
 		self.master = master
-		self.master.geometry('1350x580+0+70')
+		self.master.geometry('1350x690+0+0')
 		self.master.title('KMS - Students')
 		self.master.iconbitmap('kits.ico')
 		self.master.configure(background = '#ffffff')
 
 
+		# Students Window Widgets
+
 		self.exitBtn = Button(self.master, text = "Close", width = 5, command = self.exit, bg = "#09383d", fg = "#ffffff", font = ('Helvetica', 16, 'bold'))
 		self.exitBtn.grid(row = 0, column = 0, pady = 10, sticky = W)
 
 		self.leftPanel = Frame(self.master, padx = 20, pady = 20)
-		self.leftPanel.grid(row = 3, column = 0, columnspan = 3, padx = 20, pady = 10)
+		self.leftPanel.grid(row = 3, column = 0, columnspan = 3, padx = 20, pady = 50)
 
 		self.rightPanel = Frame(self.master, padx = 20, pady = 20)
 		self.rightPanel.grid(row = 3, column = 3, rowspan = 15 , columnspan = 6, padx = 20, pady = 10)
@@ -1328,8 +1401,8 @@ class Students():
 		self.clearBtn = Button(self.master, text = "Clear", width = 5, command = self.clear, bg = "#09383d", fg = "#ffffff", font = ('Helvetica', 12, 'bold'))
 		self.clearBtn.grid(row = 4, column = 8, ipadx = 14)
 
-		self.enrolmentLabel = Label(self.master, text = "Student Enrolment", fg = "#09383d", bg = "#ffffff", font = ("Helvetica", 20, "bold"))
-		self.enrolmentLabel.grid(row = 1, column = 0, pady = 7)
+		self.enrolmentLabel = Label(self.leftPanel, text = "Student Enrolment", fg = "#09383d", font = ("Helvetica", 18, "bold"))
+		self.enrolmentLabel.grid(row = 0, column = 0, columnspan = 2, pady = 7, sticky = W)
 
 		self.nameLabel = Label(self.leftPanel, text = "Name", font =('Helvetica', 12, 'bold')).grid(row = 2, column = 0, sticky = W)
 		self.genderLabel = Label(self.leftPanel, text = "Gender", font =('Helvetica', 12, 'bold')).grid(row = 3, column = 0, sticky = W)
@@ -1339,32 +1412,28 @@ class Students():
 		self.lengthLabel = Label(self.leftPanel, text = "Length", font =('Helvetica', 12, 'bold')).grid(row = 7, column = 0, sticky = W)
 		self.feesLabel = Label(self.leftPanel, text = "Fees", font =('Helvetica', 12, 'bold')).grid(row = 8, column = 0, sticky = W)
 		self.paidLabel = Label(self.leftPanel, text = "paid", font =('Helvetica', 12, 'bold')).grid(row = 9, column = 0, sticky = W)
-		#self.remainderLabel = Label(self.leftPanel, text = "Remainder", font =('Helvetica', 12, 'bold')).grid(row = 10, column = 0, sticky = W)
-		#self.dateLabel = Label(self.leftPanel, text = "Date", font =('Helvetica', 12, 'bold')).grid(row = 11, column = 0, sticky = W)
 		self.statusLabel = Label(self.leftPanel, text = "Status", font =('Helvetica', 12, 'bold')).grid(row = 12, column = 0, sticky = W)
-		#self.certnumberLabel = Label(self.leftPanel, text = "Cert no.", font =('Helvetica', 12, 'bold')).grid(row = 13, column = 0, sticky = W)
-
 
 		self.note = Label(self.leftPanel, text = "Note: Currency is US dollars ($)", font =('Helvetica', 10)).grid(row = 14, column = 1)
 		
 		self.genderSelect = StringVar()
-		self.genderSelect.set("Male")
+		self.genderSelect.set("Select a gender")
 
 		self.courseSelect = StringVar()
-		self.courseSelect.set("Cisco CCNA")
+		self.courseSelect.set("Select a course")
 
 		self.statusSelect = StringVar()
-		self.statusSelect.set("Off")
+		self.statusSelect.set("Select a status")
 
 		self.name = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.name.grid(row = 2, column = 1)
-		self.gender = OptionMenu(self.leftPanel, self.genderSelect, "Male", "Female")
+		self.gender = OptionMenu(self.leftPanel, self.genderSelect, "Select a gender", "Male", "Female")
 		self.gender.grid(row = 3, column = 1)
 		self.email = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.email.grid(row = 4, column = 1)
 		self.mobile = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.mobile.grid(row = 5, column = 1)
-		self.course = OptionMenu(self.leftPanel, self.courseSelect, "Other", "Cisco CCNA RS", "Cisco CCNP", "Cisco Voice", "Cyber Security", "Database Administrator", "Ethical Hacking", "Exchange Server", "Java Developer", "Linux Essentials", "Linux SYSADMIN", "Mobile App Developer", "Oracle Database", "Penetration Testing", "PostgreSQL", "Python", "Software Developer", "SQL Server", "Web Developer", "Webmaster", "Windows Server")
+		self.course = OptionMenu(self.leftPanel, self.courseSelect, "Select a course", "Cisco CCNA RS", "Cisco CCNP", "Cisco Voice", "Cyber Security", "Database Administrator", "Ethical Hacking", "Exchange Server", "Java Developer", "Linux Essentials", "Linux SYSADMIN", "Mobile App Developer", "Oracle Database", "Penetration Testing", "PostgreSQL", "Python", "Software Developer", "SQL Server", "Web Developer", "Webmaster", "Windows Server")
 		self.course.grid(row = 6, column = 1)
 		self.length = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.length.grid(row = 7, column = 1)
@@ -1372,19 +1441,14 @@ class Students():
 		self.fees.grid(row = 8, column = 1)
 		self.paid = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.paid.grid(row = 9, column = 1)
-		self.remainder = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.remainder.grid(row = 10, column = 1)
-		self.date_ = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.date_.grid(row = 11, column = 1)
-		self.status = OptionMenu(self.leftPanel, self.statusSelect, "Off", "In Progress", "Cancelled" ,"Completed")
+		self.status = OptionMenu(self.leftPanel, self.statusSelect, "Select a status", "In Progress", "Cancelled" ,"Completed")
 		self.status.grid(row = 12, column = 1)
-		self.certnumber = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.certnumber.grid(row = 13, column = 1)
-
+		
 		self.enrollBtn = Button(self.leftPanel, text = "Enroll", command = self.enroll , width = 17, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.enrollBtn.grid(row = 15, column = 1, pady = 10)
 
-		# Buttons
+
+		# Students Window Navigation Buttons
 
 		self.students = Button(self.master, text = "Students", command = self.query_all, width = 15, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.students.grid(row = 1, column = 3)
@@ -1401,22 +1465,17 @@ class Students():
 		self.pendingPayment = Button(self.master, text = "Pending Payment", command = self.query_pendingPayment , width = 15, font = ("Helvetica", 12, "bold"), bg = "#fa1b27", fg = "#ffffff")
 		self.pendingPayment.grid(row = 0, column = 3)
 
-
 		self.searchstudent = Button(self.master, text = "Search Student", command = self.query_student, bg = '#ffffff' , font = ("Helvetica", 10))
 		self.searchstudent.grid(row = 0, column = 7)
 		self.searchBox = Entry(self.master, bd = 1, bg = "#f8fafa", relief = SUNKEN)
 		self.searchBox.grid(row = 0, column = 8)
-
-		#global search 
-		#search = self.searchBox.get()
 
 		self.studentIDLabel = Label(self.master, text = "Student ID: ", bg = '#ffffff' , font = ("Helvetica", 10))
 		self.studentIDLabel.grid(row = 2, column = 7, sticky = E)
 		self.studentID = Entry(self.master)
 		self.studentID.grid(row = 2, column = 8)
 
-
-		# Listbox to display records
+		# Display Area
 
 		self.dataList = Listbox(self.rightPanel, font = ('Helvetica', 9, 'bold'), width = 120, height = 16, bg = "#ffffff")
 		self.dataList.grid(row = 0, rowspan = 15, column = 0)
@@ -1429,7 +1488,9 @@ class Students():
 
 		self.dataList.delete(0, END)
 
+
 	def enroll(self):
+
 		global trainingIncome
 
 		conn = sqlite3.connect('kits_data.db')
@@ -1460,20 +1521,19 @@ class Students():
 		conn.close()
 
 
-
 		self.name.delete(0, END)
 		self.email.delete(0, END)
 		self.mobile.delete(0, END)
 		self.length.delete(0, END)
 		self.fees.delete(0, END)
 		self.paid.delete(0, END)
-		self.certnumber.delete(0, END)
-	
+		self.certnumber.delete(0, END)	
 
 		response = messagebox.showinfo('Enrolment', 'Student enrolled successfully !')
 
 
 	def query_all(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -1491,18 +1551,18 @@ class Students():
 		for record in students_records:
 			self.dataList.insert(END, str(record[12])+ "    " + str(record[0]) + "    " + str(record[1]) + "    " + str(record[2]) + "    " + str(record[3]) + "    " + str(record[4]) + "    "  + str(record[5]) + "    " + str(record[6]) + "    " + str(record[7]) + "    "  + str(record[8]) + "    "  + str(record[10]) + "    "  + str(record[11]) + "    " + str(record[9]) + "\n")
 
-
 		conn.commit()
 		conn.close()
 
+
 	def query_completed(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
 		c.execute("SELECT *, oid FROM students WHERE status = 'Completed' ")
 		projects_records = c.fetchall()
 		
-
 		self.dataList.delete(0, END)
 
 		self.dataList.insert(END, "STUDENTS  |  Alumni")
@@ -1513,18 +1573,18 @@ class Students():
 		for record in projects_records:
 			self.dataList.insert(END, str(record[12])+ "     " + str(record[0]) + "     " + str(record[1]) + "     " + str(record[2]) + "     " + str(record[3]) + "     " + str(record[4]) + "     "  + str(record[10]) + "     "  + str(record[11]) + "\n")
 
-
 		conn.commit()
 		conn.close()
 
+
 	def query_inprogress(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
 		c.execute("SELECT *, oid FROM students WHERE status = 'In Progress' ")
 		projects_records = c.fetchall()
 		
-
 		self.dataList.delete(0, END)
 
 		self.dataList.insert(END, "STUDENTS  |  Trainings In Progress")
@@ -1539,14 +1599,15 @@ class Students():
 		conn.commit()
 		conn.close()
 
+
 	def query_cancelled(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
 		c.execute("SELECT *, oid FROM students WHERE status = 'Cancelled' ")
 		projects_records = c.fetchall()
 		
-
 		self.dataList.delete(0, END)
 
 		self.dataList.insert(END, "STUDENTS  |  Cancelled Trainings")
@@ -1557,9 +1618,9 @@ class Students():
 		for record in projects_records:
 			self.dataList.insert(END, str(record[12])+ "     " + str(record[0]) + "     " + str(record[1]) + "     " + str(record[2]) + "     " + str(record[3]) + "     " + str(record[4]) +  "     " + str(record[6]) + "     " + str(record[7]) + "     "  + str(record[8]) + "     "  + str(record[10]) + "\n")
 
-
 		conn.commit()
 		conn.close()
+
 
 	def query_student(self):
 
@@ -1571,7 +1632,6 @@ class Students():
 		c.execute("SELECT *, oid FROM students WHERE name = ?", (search,))
 		projects_records = c.fetchall()
 		
-
 		self.dataList.delete(0, END)
 
 		self.dataList.insert(END, "STUDENTS  |  Searched")
@@ -1582,20 +1642,20 @@ class Students():
 		for record in projects_records:
 			self.dataList.insert(END, str(record[12])+ "   " + str(record[0]) + "   " + str(record[1]) + "   " + str(record[2]) + "   " + str(record[3]) + "   " + str(record[4]) + "   "  + str(record[5]) + "   " + str(record[6]) + "   " + str(record[7]) + "   "  + str(record[8]) + "   "  + str(record[10]) + "   "  + str(record[11]) + "   " + str(record[9]) + "\n")
 
-
 		conn.commit()
 		conn.close()
 
 		self.searchBox.delete(0, END)
 
+
 	def query_pendingPayment(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
 		c.execute("SELECT *, oid FROM students WHERE remainder > 0 ")
 		projects_records = c.fetchall()
 		
-
 		self.dataList.delete(0, END)
 
 		self.dataList.insert(END, "STUDENTS  |  Pending payment")
@@ -1606,12 +1666,12 @@ class Students():
 		for record in projects_records:
 			self.dataList.insert(END, str(record[12])+ "     " + str(record[0]) + "     " +  str(record[3]) + "     " + str(record[4]) + "     " + str(record[6]) + "     " + str(record[7]) + "     "  + str(record[8]) + "     "  + str(record[10]) + "\n")
 
-
 		conn.commit()
 		conn.close()
 
 	
 	def updateWin(self):
+
 		global student_id
 
 		editor = Toplevel(self.master)
@@ -1625,7 +1685,6 @@ class Students():
 		c.execute("SELECT * from students WHERE oid = ?", (student_id,))
 
 		records = c.fetchall()
-
 
 		for record in records:
 			nameEditor.insert(0, record[0])
@@ -1647,7 +1706,9 @@ class Students():
 		
 
 	def delete(self):
+
 		response = messagebox.askyesno('Delete Record', 'Do you want to delete this student?')
+
 		if response == 1:
 			conn = sqlite3.connect('kits_data.db')
 			c = conn.cursor()
@@ -1655,11 +1716,12 @@ class Students():
 			c.execute("DELETE from students WHERE oid = " + self.studentID.get())
 
 			self.studentID.delete(0, END)
-
-			
+		
 			conn.commit()
 			conn.close()
+
 			response = messagebox.showinfo('Delete Record', 'Record deleted successfully!')
+
 
 	def clear(self):
 		self.dataList.delete(0, END)
@@ -1667,13 +1729,17 @@ class Students():
 	def exit(self):
 		self.master.destroy()
 
-
 	conn.commit()
 	conn.close()
 
 
+# Update Student =========================================================================================================================================================================================================================================================================================================================================================	
+
+
 class Updatestudent():
+
 	def __init__(self, master):
+
 		self.master = master
 		self.master.geometry('290x350+500+250')
 		self.master.iconbitmap('kits.ico')
@@ -1739,7 +1805,6 @@ class Updatestudent():
 			self.master.destroy()
 			updatemessage = messagebox.showinfo("Updated", "Student updated successfully!")
 
-
 		nameLabel = Label(self.master, text = "Name", font =('Helvetica', 12, 'bold')).grid(row = 2, column = 0, sticky = W)
 		genderLabel = Label(self.master, text = "Gender", font =('Helvetica', 12, 'bold')).grid(row = 3, column = 0, sticky = W)
 		emailLabel = Label(self.master, text = "E-mail", font =('Helvetica', 12, 'bold')).grid(row = 4, column = 0, sticky = W)
@@ -1751,27 +1816,26 @@ class Updatestudent():
 		statusLabel = Label(self.master, text = "Status", font =('Helvetica', 12, 'bold')).grid(row = 12, column = 0, sticky = W)
 		certnumberLabel = Label(self.master, text = "Cert no.", font =('Helvetica', 12, 'bold')).grid(row = 13, column = 0, sticky = W)
 		
-
 		note = Label(self.master, text = "Note: Currency is US dollars ($)", font =('Helvetica', 10)).grid(row = 14, column = 1)
 		
 		genderSelectEditor = StringVar()
-		genderSelectEditor.set("Male")
+		genderSelectEditor.set("Select a gender")
 
 		courseSelectEditor = StringVar()
-		courseSelectEditor.set("Cisco CCNA")
+		courseSelectEditor.set("Select a course")
 
 		statusSelectEditor = StringVar()
-		statusSelectEditor.set("Off")
+		statusSelectEditor.set("Select a status")
 
 		nameEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		nameEditor.grid(row = 2, column = 1)
-		genderEditor = OptionMenu(self.master, genderSelectEditor, "Other", "Desktop App", "Desktop App and Graphics", "Digital Marketing", "Graphics", "Infrastructure", "Mobile App" , "Web App", "Web App and Graphics", "Web App and Mobile App", "Website", "Website and Desktop App", "Website and Graphics", "Website and Mobile App", "Website, Mobile App and Graphics", "Web App, Mobile App and Graphics")
+		genderEditor = OptionMenu(self.master, genderSelectEditor, "Select a gender", "Male", "Female")
 		genderEditor.grid(row = 3, column = 1)
 		emailEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		emailEditor.grid(row = 4, column = 1)
 		mobileEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		mobileEditor.grid(row = 5, column = 1)
-		courseEditor = OptionMenu(self.master, courseSelectEditor, "Other", "Cisco CCNA RS", "Cisco CCNP", "Cisco Voice", "Cyber Security", "Database Administrator", "Ethical Hacking", "Exchange Server", "Java Developer", "Linux Essentials", "Linux Networking and Administration", "Mobile App Developer", "Oracle Database", "Penetration Testing", "PostgreSQL", "Python", "Software Developer", "SQL Server", "Web Developer", "Webmaster", "Windows Server")
+		courseEditor = OptionMenu(self.master, courseSelectEditor, "Select a course", "Cisco CCNA RS", "Cisco CCNP", "Cisco Voice", "Cyber Security", "Database Administrator", "Ethical Hacking", "Exchange Server", "Java Developer", "Linux Essentials", "Linux Networking and Administration", "Mobile App Developer", "Oracle Database", "Penetration Testing", "PostgreSQL", "Python", "Software Developer", "SQL Server", "Web Developer", "Webmaster", "Windows Server")
 		courseEditor.grid(row = 6, column = 1)
 		lengthEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		lengthEditor.grid(row = 7, column = 1)
@@ -1779,18 +1843,20 @@ class Updatestudent():
 		feesEditor.grid(row = 8, column = 1)
 		paidEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		paidEditor.grid(row = 9, column = 1)
-		statusEditor = OptionMenu(self.master, statusSelectEditor, "Off", "In Progress", "Cancelled" ,"Completed")
+		statusEditor = OptionMenu(self.master, statusSelectEditor, "Select a status", "In Progress", "Cancelled" ,"Completed")
 		statusEditor.grid(row = 12, column = 1)
 		certnumberEditor = Entry(self.master, width = 25, bd = 1, font = ('Helvetica', 10))
 		certnumberEditor.grid(row = 13, column = 1)
 		
-
 		updateBtn = Button(self.master, text = "Update", command = update , width = 17, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		updateBtn.grid(row = 15, column = 1, pady = 10)
 	
 
+# Finances Window =========================================================================================================================================================================================================================================================================================================================================================
 
 class Finances():
+
+	# Database Connection and Tables Creation
 
 	conn = sqlite3.connect('kits_data.db')
 	c = conn.cursor()
@@ -1812,12 +1878,19 @@ class Finances():
 		date_ text
 		)""")
 
+
 	def __init__(self, master):
+
+		# Window Configuration
+
 		self.master = master
-		self.master.geometry('1350x550+0+70')
+		self.master.geometry('1350x690+0+0')
 		self.master.title('KMS - Finances')
 		self.master.iconbitmap('kits.ico')
 		self.master.configure(background = '#ffffff')
+
+
+		# Finances Variables
 
 		global income_fromProjects
 		global income_fromSales
@@ -1826,11 +1899,10 @@ class Finances():
 		global fromInvestments
 
 		self.exitBtn = Button(self.master, text = "Close", width = 5, command = self.exit, bg = "#09383d", fg = "#ffffff", font = ('Helvetica', 16, 'bold'))
-		self.exitBtn.grid(row = 0, column = 0, sticky = W)
-
+		self.exitBtn.grid(row = 0, column = 0, pady = 10, sticky = W)
 
 		self.left = Frame(self.master, padx = 20)
-		self.left.grid(row = 3, column = 0, padx = 20)
+		self.left.grid(row = 3, column = 0, padx = 20, pady = 50)
 
 		self.leftupper = Frame(self.left)
 		self.leftupper.grid(row = 0, column = 0, pady = 5)
@@ -1845,7 +1917,7 @@ class Finances():
 		self.clearBtn.grid(row = 5, column = 8, ipadx = 14)
 
 		self.expensesLabel = Label(self.leftupper, text = "Add expense", fg = "#09383d", font = ("Helvetica", 18, "bold"))
-		self.expensesLabel.grid(row = 0, column = 0, columnspan = 2, pady = 1)
+		self.expensesLabel.grid(row = 0, column = 0, columnspan = 2, pady = 1, sticky = W)
 	
 		self.amountLabel = Label(self.leftupper, text = "Amount ($)", font =('Helvetica', 12, 'bold')).grid(row = 1, column = 0, sticky = W)
 		self.beneficiaryLabel = Label(self.leftupper, text = "Beneficiary", font =('Helvetica', 12, 'bold')).grid(row = 2, column = 0, sticky = W)
@@ -1862,9 +1934,8 @@ class Finances():
 		self.addexpenseBtn.grid(row = 4, column = 1, pady = 10, sticky = E)
 
 
-
 		self.investmentLabel = Label(self.leftlower, text = "Make an investment", fg = "#09383d", font = ("Helvetica", 18, "bold"))
-		self.investmentLabel.grid(row = 0, column = 0, columnspan = 2, pady = 1)
+		self.investmentLabel.grid(row = 0, column = 0, columnspan = 2, pady = 1, sticky = W)
 
 		self.investedAmountLabel = Label(self.leftlower, text = "Amount ($)", font =('Helvetica', 12, 'bold')).grid(row = 1, column = 0, sticky = W)
 		self.descriptionLabel = Label(self.leftlower, text = "Description", font =('Helvetica', 12, 'bold')).grid(row = 2, column = 0, sticky = W)
@@ -1887,7 +1958,7 @@ class Finances():
 		self.investBtn = Button(self.leftlower, text = "Invest", command = self.invest, width = 10, font = ("Helvetica", 10, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.investBtn.grid(row = 6, column = 1, pady = 10, sticky = E)
 
-		# Buttons
+		# Finances Navigation Buttons
 
 		self.account = Button(self.master, text = "Accounting", command = self.accounting, width = 15, font = ("Helvetica", 12, "bold"), fg = "#fa1b27", bg = "#ffffff", bd = 2, relief = RIDGE)
 		self.account.grid(row = 1, column = 3)
@@ -1914,7 +1985,7 @@ class Finances():
 		self.expenseID.grid(row = 2, column = 8)
 
 
-		# Listbox to display records
+		# Display Area
 
 		self.dataList = Listbox(self.rightPanel, font = ('Helvetica', 9, 'bold'), width = 120, height = 16, bg = "#ffffff")
 		self.dataList.grid(row = 0, rowspan = 10, column = 0)
@@ -1927,6 +1998,8 @@ class Finances():
 
 		self.dataList.delete(0, END)
 
+
+	# Finances Button Functions
 
 	def addExpense(self):
 		
@@ -1984,6 +2057,7 @@ class Finances():
 
 
 	def query_expenses(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -2003,7 +2077,9 @@ class Finances():
 		conn.commit()
 		conn.close()
 
+
 	def query_beneficiaries(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -2023,7 +2099,9 @@ class Finances():
 		conn.commit()
 		conn.close()
 
+
 	def query_investments(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -2045,6 +2123,7 @@ class Finances():
 
 
 	def query_investors(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -2063,6 +2142,7 @@ class Finances():
 
 		conn.commit()
 		conn.close()
+
 
 	def query_beneficiary(self):
 
@@ -2089,9 +2169,11 @@ class Finances():
 
 		self.searchBox.delete(0, END)
 
+
 	def accounting(self):
+
 		financialStatement = Toplevel(self.master)
-		financialStatement.geometry('849x480+260+110')
+		financialStatement.geometry('849x520+200+90')
 		financialStatement.title('KMS - Accounting')
 		financialStatement.iconbitmap('kits.ico')
 		financialStatement.configure(background = '#ffffff')
@@ -2158,6 +2240,7 @@ class Finances():
 		conn.commit()
 		conn.close()
 
+
 		total_income = int(income_fromProjects.get()) + int(income_fromSales.get()) + int(income_fromStudents.get())
 		total_profit = int(total_income) - int(fromInvestments.get())
 		total_loss = int(fromInvestments.get()) - int(total_income)
@@ -2195,6 +2278,7 @@ class Finances():
 
 
 	def updateWin(self):
+
 		global expense_id
 
 		editor = Toplevel(self.master)
@@ -2249,9 +2333,12 @@ class Finances():
 	conn.close()
 
 
+# Update Finances =========================================================================================================================================================================================================================================================================================================================================================
+
 class Updateexpense():
 
 	def __init__(self, master):
+
 		self.master = master
 		self.master.geometry('300x150+500+300')
 		self.master.title('KMS - Update Expense')
@@ -2307,8 +2394,11 @@ class Updateexpense():
 		updateEditorBtn.grid(row = 13, column = 1, pady = 10)
 
 
+# Personnel Window =========================================================================================================================================================================================================================================================================================================================================================
 
 class Personnel():
+
+	# Database Connection and Tables Creation
 
 	conn = sqlite3.connect('kits_data.db')
 	c = conn.cursor()
@@ -2332,28 +2422,34 @@ class Personnel():
 		status text
 		)""")
 
+
 	def __init__(self, master):
+
+		# Personnel Window Configuration
+
 		self.master = master
-		self.master.geometry('1350x640+0+25')
+		self.master.geometry('1350x690+0+0')
 		self.master.title('KMS - Human Ressources')
 		self.master.iconbitmap('kits.ico')
 		self.master.configure(background = '#ffffff')
 
 
+		# Personnel Window Widgets
+
 		self.exitBtn = Button(self.master, text = "Close", width = 5, command = self.exit, bg = "#09383d", fg = "#ffffff", font = ('Helvetica', 16, 'bold'))
 		self.exitBtn.grid(row = 0, column = 0, pady = 10, sticky = W)
 
-		self.leftPanel = Frame(self.master, padx = 10, pady = 20)
+		self.leftPanel = Frame(self.master, padx = 10, pady = 10)
 		self.leftPanel.grid(row = 3, rowspan = 17 , column = 0, columnspan = 3, padx = 10, pady = 10)
 
 		self.rightPanel = Frame(self.master, padx = 20, pady = 20)
-		self.rightPanel.grid(row = 1, column = 3, rowspan = 15 , columnspan = 6, padx = 20, pady = 10)
+		self.rightPanel.grid(row = 1, column = 3, rowspan = 15 , columnspan = 6, padx = 20, pady = 50)
 
 		self.clearBtn = Button(self.master, text = "Clear", width = 5, command = self.clear, bg = "#09383d", fg = "#ffffff", font = ('Helvetica', 12, 'bold'))
-		self.clearBtn.grid(row = 14, column = 8, ipadx = 14)
+		self.clearBtn.grid(row = 14, rowspan = 15, column = 8, ipadx = 14, pady = 10)
 
-		self.addemployeeLabel = Label(self.master, text = "Add Employee", fg = "#09383d", bg = "#ffffff", font = ("Helvetica", 20, "bold"))
-		self.addemployeeLabel.grid(row = 1, column = 0, pady = 7)
+		self.addemployeeLabel = Label(self.leftPanel, text = "Add Employee", fg = "#09383d", font = ("Helvetica", 18, "bold"))
+		self.addemployeeLabel.grid(row = 0, column = 0, columnspan = 2, pady = 7, sticky = W)
 
 		self.fullnameLabel = Label(self.leftPanel, text = "Full name", font =('Helvetica', 12, 'bold')).grid(row = 2, column = 0, sticky = W)
 		self.genderLabel = Label(self.leftPanel, text = "Gender", font =('Helvetica', 12, 'bold')).grid(row = 3, column = 0, sticky = W)
@@ -2368,33 +2464,31 @@ class Personnel():
 		self.salaryLabel = Label(self.leftPanel, text = "Salary ($)", font =('Helvetica', 12, 'bold')).grid(row = 12, column = 0, sticky = W)
 		self.contract_typeLabel = Label(self.leftPanel, text = "Contract type", font =('Helvetica', 12, 'bold')).grid(row = 13, column = 0, sticky = W)
 		self.startLabel = Label(self.leftPanel, text = "Start date", font =('Helvetica', 12, 'bold')).grid(row = 14, column = 0, sticky = W)
-		#self.endLabel = Label(self.leftPanel, text = "End date", font =('Helvetica', 12, 'bold')).grid(row = 15, column = 0, sticky = W)
-		#self.renewedLabel = Label(self.leftPanel, text = "Contract renewal", font =('Helvetica', 12, 'bold')).grid(row = 16, column = 0, sticky = W)
 		self.statusLabel = Label(self.leftPanel, text = "Status", font =('Helvetica', 12, 'bold')).grid(row = 17, column = 0, sticky = W)
 
 
 		self.genderSelect = StringVar()
-		self.genderSelect.set("Male")
+		self.genderSelect.set("Select a gender")
 
 		self.marital_statusSelect = StringVar()
-		self.marital_statusSelect.set("Single")
+		self.marital_statusSelect.set("Select a status")
 
 		self.departmentSelect = StringVar()
-		self.departmentSelect.set("None")
+		self.departmentSelect.set("Select a dept")
 
 		self.contract_typeSelect = StringVar()
-		self.contract_typeSelect.set("None")
+		self.contract_typeSelect.set("Select a type")
 
 		self.statusSelect = StringVar()
-		self.statusSelect.set("Off")
+		self.statusSelect.set("Select a status")
 
 		self.fullname = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.fullname.grid(row = 2, column = 1)
-		self.gender = OptionMenu(self.leftPanel, self.genderSelect, "Male", "Female")
+		self.gender = OptionMenu(self.leftPanel, self.genderSelect, "Select a gender", "Male", "Female")
 		self.gender.grid(row = 3, column = 1)
 		self.dob = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.dob.grid(row = 4, column = 1)
-		self.marital_status = OptionMenu(self.leftPanel, self.marital_statusSelect, "Single", "Married", "Divorced")
+		self.marital_status = OptionMenu(self.leftPanel, self.marital_statusSelect, "Select a status", "Single", "Married", "Divorced")
 		self.marital_status.grid(row = 5, column = 1)
 		self.children = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.children.grid(row = 6, column = 1)
@@ -2404,27 +2498,24 @@ class Personnel():
 		self.email.grid(row = 8, column = 1)
 		self.address = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.address.grid(row = 9, column = 1)
-		self.departement = OptionMenu(self.leftPanel, self.departmentSelect, "None", "Accounts and Finance", "Administration", "Human Ressources", "Sales and Marketing", "Information and Technology", "Product Development", "Reseach and Development", "Logistics and Transport")
+		self.departement = OptionMenu(self.leftPanel, self.departmentSelect, "Select a dept", "Accounts and Finance", "Administration", "Human Ressources", "Sales and Marketing", "Information and Technology", "Product Development", "Reseach and Development", "Logistics and Transport")
 		self.departement.grid(row = 10, column = 1)
 		self.position = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.position.grid(row = 11, column = 1)
 		self.salary = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.salary.grid(row = 12, column = 1)
-		self.contract_type = OptionMenu(self.leftPanel, self.contract_typeSelect, "None", "Internship", "Temporary", "Permanent")
+		self.contract_type = OptionMenu(self.leftPanel, self.contract_typeSelect, "Select a type", "Internship", "Temporary", "Permanent")
 		self.contract_type.grid(row = 13, column = 1)
 		self.start_date = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
 		self.start_date.grid(row = 14, column = 1)
-		self.end_date = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.end_date.grid(row = 15, column = 1)
-		self.renewed = Entry(self.leftPanel, width = 25, bd = 1, font = ('Helvetica', 10))
-		#self.renewed.grid(row = 16, column = 1)
-		self.status = OptionMenu(self.leftPanel, self.statusSelect, "Off", "Hired", "Fired" ,"Left", "Deceased")
+		self.status = OptionMenu(self.leftPanel, self.statusSelect, "Select a status", "Hired", "Fired" ,"Left", "Deceased")
 		self.status.grid(row = 17, column = 1)
 
 		self.addBtn = Button(self.leftPanel, text = "Add", command = self.add , width = 17, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.addBtn.grid(row = 18, column = 1, pady = 10)
 
-		# Buttons
+
+		# Personnel Window Navigation Buttons
 
 		self.summary = Button(self.master, text = "Summary", command = self.query_sum, width = 15, font = ("Helvetica", 12, "bold"), bg = "#09383d", fg = "#ffffff")
 		self.summary.grid(row = 1, column = 3)
@@ -2441,20 +2532,17 @@ class Personnel():
 		self.personaldetails = Button(self.master, text = "Personal Details", command = self.query_personalDetails , width = 15, font = ("Helvetica", 12, "bold"), bg = "#fa1b27", fg = "#ffffff")
 		self.personaldetails.grid(row = 0, column = 3)
 
-
 		self.searchBtn = Button(self.master, text = "Search", command = self.query, bg = '#ffffff' , font = ("Helvetica", 10))
 		self.searchBtn.grid(row = 0, column = 7, sticky = E)
 		self.searchBox = Entry(self.master, bd = 1, bg = "#f8fafa", relief = SUNKEN)
 		self.searchBox.grid(row = 0, column = 8)
-
 
 		self.empIDLabel = Label(self.master, text = "Emp ID: ", bg = '#ffffff' , font = ("Helvetica", 10))
 		self.empIDLabel.grid(row = 2, column = 7, sticky = E)
 		self.empID = Entry(self.master)
 		self.empID.grid(row = 2, column = 8)
 
-
-		# Listbox to display records
+		# Display Area
 
 		self.dataList = Listbox(self.rightPanel, font = ('Helvetica', 9, 'bold'), width = 120, height = 16, bg = "#ffffff")
 		self.dataList.grid(row = 0, rowspan = 15, column = 0)
@@ -2467,11 +2555,13 @@ class Personnel():
 
 		self.dataList.delete(0, END)
 
+
+	# Personnel Window Buttons Functions
+
 	def add(self):
 		
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
-
 
 		c.execute("INSERT INTO personnel VALUES (:fullname, :gender, :dob, :marital_status, :children, :mobile, :email, :address , :department, :position, :salary, :contract_type, :start_date, :end_date, :renewed, :status )",
 			{
@@ -2496,8 +2586,6 @@ class Personnel():
 		conn.commit()
 		conn.close()
 
-
-
 		self.fullname.delete(0, END)
 		self.dob.delete(0, END)
 		self.children.delete(0, END)
@@ -2510,18 +2598,17 @@ class Personnel():
 		self.end_date.delete(0, END)
 		self.renewed.delete(0, END)
 		
-
 		response = messagebox.showinfo('Add employee', 'New employee added successfully !')
 
 
 	def query_sum(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
 		c.execute("SELECT *, oid FROM personnel")
 		personnel_records = c.fetchall()
 		
-
 		self.dataList.delete(0, END)
 
 		self.dataList.insert(END, "PERSONNEL  |  Summary")
@@ -2532,18 +2619,18 @@ class Personnel():
 		for record in personnel_records:
 			self.dataList.insert(END, str(record[16])+ "    " + str(record[0]) + "    " + str(record[5]) + "    " + str(record[6]) + "    "  + str(record[8]) + "    " + str(record[9]) + "    " + str(record[10])+ "    " + str(record[11]) + "     " + str(record[15]) + "\n")
 
-
 		conn.commit()
 		conn.close()
 
+
 	def query_all(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
 		c.execute("SELECT *, oid FROM personnel")
 		personnel_records = c.fetchall()
 		
-
 		self.dataList.delete(0, END)
 
 		self.dataList.insert(END, "PERSONNEL")
@@ -2554,11 +2641,12 @@ class Personnel():
 		for record in personnel_records:
 			self.dataList.insert(END, str(record[16])+ " " + str(record[0]) + " " + str(record[1]) + " " + str(record[2]) + " " + str(record[3]) + " " + str(record[4]) + " " + str(record[5]) + " "  + str(record[6]) + " " + str(record[7])+ " "  + str(record[8]) + " " + str(record[9]) + " " + str(record[10]) + " " + str(record[11]) + " " + str(record[12]) + " " + str(record[13]) + " " + str(record[14]) + " " + str(record[15]) +"\n")
 
-
 		conn.commit()
 		conn.close()
 
+
 	def query_salaries(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -2577,11 +2665,12 @@ class Personnel():
 		for record in personnel_records:
 			self.dataList.insert(END, str(record[16])+ "      " + str(record[0]) + "      " + str(record[1]) + "      " + str(record[3]) + "      " + str(record[4]) + "      " + str(record[9]) + "      " + str(record[10]) + "      "  + str(record[15]) + "\n")
 
-
 		conn.commit()
 		conn.close()
 
+
 	def query_contracts(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -2599,9 +2688,9 @@ class Personnel():
 		for record in personnel_records:
 			self.dataList.insert(END, str(record[16])+ "      " + str(record[0]) + "      " + str(record[9]) + "      " + str(record[10]) + "      " + str(record[11]) + "      " + str(record[12]) + "      " + str(record[13]) + "      "  + str(record[14]) + "      " + str(record[15]) + "\n")
 
-
 		conn.commit()
 		conn.close()
+
 
 	def query(self):
 
@@ -2751,6 +2840,7 @@ class Personnel():
 
 
 	def query_personalDetails(self):
+
 		conn = sqlite3.connect('kits_data.db')
 		c = conn.cursor()
 
@@ -2774,6 +2864,7 @@ class Personnel():
 
 	
 	def updateWin(self):
+
 		global employee_id
 
 		editor = Toplevel(self.master)
@@ -2814,7 +2905,9 @@ class Personnel():
 		
 
 	def delete(self):
+
 		response = messagebox.askyesno('Delete Record', 'Do you want to delete this record?')
+
 		if response == 1:
 			conn = sqlite3.connect('kits_data.db')
 			c = conn.cursor()
@@ -2834,13 +2927,16 @@ class Personnel():
 	def exit(self):
 		self.master.destroy()
 
-
 	conn.commit()
 	conn.close()
 
 
+# Update Personnel =========================================================================================================================================================================================================================================================================================================================================================
+
 class Updateemployee():
+
 	def __init__(self, master):
+
 		self.master = master
 		self.master.geometry('340x500+500+50')
 		self.master.title('KMS - Update Employee')
@@ -2988,18 +3084,30 @@ class Updateemployee():
 		addBtnEditor.grid(row = 18, column = 1, pady = 10)
 
 
+# Maintenance Window =========================================================================================================================================================================================================================================================================================================================================================
+
 class Maintenance():
+
 	def __init__(self, master):
+
 		self.master = master
 		self.master.geometry('250x100+31+545')
 		self.master.title('KMS - Maintenance')
 		self.master.iconbitmap('kits.ico')
 
 		def backup():
-			run('copy kits_data.db db/ /y')
+			run('git init')
+			run('git remote add origin https://github.com/michaelkamande/db.git')
+			run('git add .gitignore')
+			run('git add kits_data.db')
+			run('git commit -m "Database backup"')
+			run('git push origin master')
+			run('cp kits_data.db ./db')
 
 		def restore():
-			run('copy db/kits_data.db kits_data.db')
+			run('git init')
+			run('git remote add origin https://github.com/michaelkamande/db.git')
+			run('git pull origin master')
 
 		self.backupBtn = Button(self.master, text = "Back up", command = backup, width = 10, font = ('Helvetica', 10, 'bold'), bg = "#09383d", fg = "#ffffff")
 		self.backupBtn.grid(row = 0, column = 0, pady = 25, padx = 20)
